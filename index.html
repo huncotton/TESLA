@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Сервісний центр Tesla — обслуговування, ремонт, оренда</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090B; --surface:#131417; --surface2:#1B1D21; --line:rgba(255,255,255,.08);
+  --text:#E8E9EB; --text-dim:#8B8D93; --accent:#4B7BFF; --accent-dim:#2E4EBF; --silver:#C7CAD1;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+:root[data-theme="light"]{
+  --bg:#F5F5F4; --surface:#FFFFFF; --surface2:#ECECEA; --line:rgba(0,0,0,.09);
+  --text:#111214; --text-dim:#5B5D63; --accent:#2A56E8; --accent-dim:#1B3EA8; --silver:#5B5D63;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth; scroll-padding-top:70px;}
+body{background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; line-height:1.6; overflow-x:hidden;}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif; font-weight:600; letter-spacing:-0.02em; line-height:1.1;}
+a{color:inherit; text-decoration:none;}
+.wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+img,svg{max-width:100%;}
+
+/* NAV */
+header{position:sticky; top:0; z-index:100; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+nav{display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1180px; margin:0 auto;}
+.logo{font-family:'Space Grotesk'; font-weight:700; font-size:1.15rem; display:flex; align-items:center; gap:8px;}
+.logo .dot{width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent);}
+.navlinks{display:flex; gap:28px; font-size:.92rem;}
+.navlinks a{color:var(--text-dim); transition:color .2s;}
+.navlinks a:hover{color:var(--text);}
+.navright{display:flex; align-items:center; gap:14px;}
+.theme-btn{background:none; border:1px solid var(--line); color:var(--text); width:36px; height:36px; border-radius:4px; cursor:pointer; font-size:.9rem;}
+.burger{display:none; background:none; border:none; color:var(--text); font-size:1.4rem; cursor:pointer;}
+.btn{display:inline-block; padding:12px 22px; border-radius:4px; font-size:.9rem; font-weight:500; cursor:pointer; border:1px solid transparent; transition:all .2s; white-space:nowrap;}
+.btn-primary{background:var(--accent); color:#fff;}
+.btn-primary:hover{background:var(--accent-dim);}
+.btn-ghost{border-color:var(--line); color:var(--text);}
+.btn-ghost:hover{border-color:var(--silver);}
+
+/* HERO */
+.hero{padding:90px 0 70px; border-bottom:1px solid var(--line); position:relative; overflow:hidden;}
+.hero-glow{position:absolute; width:560px; height:560px; border-radius:50%; background:radial-gradient(circle, color-mix(in srgb, var(--accent) 22%, transparent) 0%, transparent 70%); pointer-events:none; left:var(--gx,20%); top:var(--gy,-10%); transform:translate(-50%,-50%); transition:left .6s ease-out, top .6s ease-out; z-index:0;}
+.hero-lines{position:absolute; inset:0; z-index:0; opacity:.5;}
+.hero-lines path{stroke:var(--line); stroke-width:1; fill:none;}
+.hero-lines .pulse{stroke:var(--accent); stroke-dasharray:6 380; stroke-dashoffset:0; animation:pulseTravel 5.5s linear infinite;}
+.hero-lines .pulse2{animation-delay:1.8s;}
+.hero-lines .pulse3{animation-delay:3.4s;}
+@keyframes pulseTravel{0%{stroke-dashoffset:386;}100%{stroke-dashoffset:0;}}
+.hero-grid{position:relative; z-index:1; display:grid; grid-template-columns:1.3fr .7fr; gap:50px; align-items:end;}
+@media (prefers-reduced-motion:reduce){.hero-lines .pulse,.hero-lines .pulse2,.hero-lines .pulse3{animation:none;} .charge-fill{animation:none; width:87%;}}
+.eyebrow{color:var(--accent); font-size:.85rem; margin-bottom:18px;}
+.hero h1{font-size:3.2rem; max-width:620px;}
+.hero p{color:var(--text-dim); font-size:1.05rem; max-width:480px; margin:20px 0 32px;}
+.hero-cta{display:flex; gap:14px; flex-wrap:wrap;}
+.stat-box{border-left:1px solid var(--line); padding-left:24px;}
+.stat-num{font-family:'Space Grotesk'; font-size:3.4rem; font-weight:700; color:var(--accent);}
+.stat-label{color:var(--text-dim); font-size:.88rem; margin-top:4px;}
+.charge-bar{height:3px; background:var(--surface2); border-radius:2px; margin-top:22px; overflow:hidden;}
+.charge-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--accent-dim),var(--accent)); border-radius:2px; animation:charge 1.8s ease forwards .3s;}
+@keyframes charge{to{width:87%;}}
+
+/* SECTION generic */
+section{padding:80px 0; border-bottom:1px solid var(--line);}
+.sec-head{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:44px; gap:20px; flex-wrap:wrap;}
+.sec-head h2{font-size:2rem;}
+.sec-head p{color:var(--text-dim); max-width:420px; font-size:.95rem;}
+
+/* Advantages */
+.adv-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:0; border-top:1px solid var(--line); border-left:1px solid var(--line);}
+.adv-item{border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:28px 22px;}
+.adv-item .num{color:var(--text-dim); font-size:.8rem; margin-bottom:14px; font-family:'Space Grotesk';}
+.adv-item h4{font-size:1.02rem; margin-bottom:8px;}
+.adv-item p{color:var(--text-dim); font-size:.88rem;}
+
+/* Services */
+.filter-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:30px;}
+.chip{padding:8px 16px; border:1px solid var(--line); border-radius:20px; font-size:.85rem; cursor:pointer; color:var(--text-dim); transition:all .2s;}
+.chip.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+.svc-table{width:100%; border-collapse:collapse;}
+.svc-table tr{border-bottom:1px solid var(--line);}
+.svc-table td{padding:18px 8px; font-size:.95rem;}
+.svc-table td:last-child{text-align:right; color:var(--accent); font-family:'Space Grotesk'; font-weight:600; white-space:nowrap;}
+.svc-table .model-tags{display:none; font-size:.78rem; color:var(--text-dim); margin-top:4px;}
+.svc-row.hide{display:none;}
+
+/* Booking form */
+.form-card{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:36px; margin-top:50px;}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.field{display:flex; flex-direction:column; gap:6px;}
+.field.full{grid-column:1/-1;}
+label{font-size:.82rem; color:var(--text-dim);}
+input,select,textarea{background:var(--surface2); border:1px solid var(--line); border-radius:4px; padding:12px 14px; color:var(--text); font-family:inherit; font-size:.92rem;}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+.form-note{font-size:.82rem; color:var(--text-dim); margin-top:14px;}
+
+/* Rental */
+.rental-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line);}
+.car-card{background:var(--bg); padding:24px; display:flex; flex-direction:column; gap:10px;}
+.car-vis{height:110px; border-radius:4px; background:linear-gradient(135deg,var(--surface2),var(--surface)); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:.78rem; border:1px dashed var(--line);}
+.car-card h4{font-size:1.1rem;}
+.car-specs{font-size:.82rem; color:var(--text-dim);}
+.car-price{font-family:'Space Grotesk'; font-weight:600; color:var(--accent); font-size:1.15rem; margin-top:6px;}
+.car-price span{font-size:.75rem; color:var(--text-dim); font-weight:400;}
+
+/* Testimonials */
+.rev-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-top:1px solid var(--line); border-left:1px solid var(--line);}
+.rev-item{border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:26px 24px;}
+.rev-item p{font-size:.92rem; color:var(--text-dim); margin-bottom:16px;}
+.rev-name{font-size:.88rem; font-weight:500;}
+.rev-model{font-size:.78rem; color:var(--accent);}
+
+/* Pricing */
+.price-tabs{display:flex; gap:8px; margin-bottom:26px;}
+.price-tab-content{display:none;}
+.price-tab-content.active{display:block;}
+
+/* About */
+.about-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;}
+.cert-row{display:flex; gap:24px; margin-top:24px; flex-wrap:wrap;}
+.cert{border:1px solid var(--line); border-radius:4px; padding:12px 16px; font-size:.8rem; color:var(--text-dim);}
+
+/* Contact */
+.contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:50px;}
+.contact-info div{margin-bottom:20px;}
+.contact-info .lbl{font-size:.78rem; color:var(--text-dim); margin-bottom:4px;}
+.social-row{display:flex; gap:12px; margin-top:20px;}
+.social-row a{border:1px solid var(--line); border-radius:4px; padding:10px 16px; font-size:.85rem;}
+.social-row a:hover{border-color:var(--accent); color:var(--accent);}
+
+footer{padding:36px 0; text-align:center; color:var(--text-dim); font-size:.82rem;}
+
+@media (max-width:820px){
+  .navlinks{position:fixed; top:68px; left:0; right:0; background:var(--bg); border-bottom:1px solid var(--line); flex-direction:column; padding:20px 24px; gap:16px; display:none;}
+  .navlinks.open{display:flex;}
+  .burger{display:block;}
+  .hero-grid{grid-template-columns:1fr;}
+  .hero h1{font-size:2.2rem;}
+  .adv-grid{grid-template-columns:1fr 1fr;}
+  .rev-grid{grid-template-columns:1fr;}
+  .about-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+<nav>
+  <div class="logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="24" height="24" rx="4" stroke="var(--accent)" stroke-width="1.4"/>
+      <path d="M14.5 6L8.5 14H12.5L11 20L17.5 11.5H13L14.5 6Z" fill="var(--accent)"/>
+    </svg>
+    AMPCARE
+  </div>
+  <div class="navlinks" id="navlinks">
+    <a href="#services">Послуги</a>
+    <a href="#rental">Оренда</a>
+    <a href="#about">Про нас</a>
+    <a href="#prices">Ціни</a>
+    <a href="#contacts">Контакти</a>
+  </div>
+  <div class="navright">
+    <button class="theme-btn" id="themeBtn" title="Змінити тему">◐</button>
+    <a href="#booking" class="btn btn-primary" style="padding:9px 16px;font-size:.85rem;">Записатись</a>
+    <button class="burger" id="burgerBtn">☰</button>
+  </div>
+</nav>
+</header>
+
+<section class="hero" id="heroSec">
+  <div class="hero-glow" id="heroGlow"></div>
+  <svg class="hero-lines" viewBox="0 0 1180 420" preserveAspectRatio="none">
+    <path d="M0,80 L300,80 L340,120 L700,120 L740,160 L1180,160" />
+    <path class="pulse pulse1" d="M0,80 L300,80 L340,120 L700,120 L740,160 L1180,160" />
+    <path d="M0,260 L260,260 L300,220 L620,220 L660,180 L1180,180" />
+    <path class="pulse pulse2" d="M0,260 L260,260 L300,220 L620,220 L660,180 L1180,180" />
+    <path d="M0,360 L420,360 L460,320 L900,320 L940,280 L1180,280" />
+    <path class="pulse pulse3" d="M0,360 L420,360 L460,320 L900,320 L940,280 L1180,280" />
+  </svg>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Сертифікований сервіс електромобілів Tesla</div>
+      <h1>Обслуговування Tesla, якому довіряють власники</h1>
+      <p>Діагностика, ремонт, тюнінг і догляд для Model 3, Model Y, Model S, Model X та Cybertruck. А якщо своєї Tesla ще немає — орендуйте нашу.</p>
+      <div class="hero-cta">
+        <a href="#booking" class="btn btn-primary">Записатися на сервіс</a>
+        <a href="#rental" class="btn btn-ghost">Орендувати Tesla</a>
+      </div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" id="statNum" data-target="500">0</div>
+      <div class="stat-label">обслугованих Tesla з 2021 року</div>
+      <div class="charge-bar"><div class="charge-fill"></div></div>
+      <div class="stat-label" style="margin-top:6px;">87% клієнтів повертаються повторно</div>
+    </div>
+  </div>
+</section>
+
+<section id="advantages">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Чому обирають нас</h2>
+      <p>Ми працюємо тільки з електромобілями Tesla — це наша єдина спеціалізація.</p>
+    </div>
+    <div class="adv-grid">
+      <div class="adv-item"><div class="num">01</div><h4>Оригінальні запчастини</h4><p>Постачання сертифікованих компонентів під кожну модель.</p></div>
+      <div class="adv-item"><div class="num">02</div><h4>Сертифіковані інженери</h4><p>Команда, що пройшла профільне навчання з високовольтних систем Tesla.</p></div>
+      <div class="adv-item"><div class="num">03</div><h4>Гарантія на роботи</h4><p>До 24 місяців гарантії залежно від типу ремонту.</p></div>
+      <div class="adv-item"><div class="num">04</div><h4>Діагностика за 40 хв</h4><p>Повне сканування систем автомобіля фірмовим обладнанням.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Послуги сервісу</h2>
+      <p>Оберіть модель, щоб побачити доступні послуги та ціни.</p>
+    </div>
+    <div class="filter-row" id="filterRow">
+      <div class="chip active" data-model="all">Усі моделі</div>
+      <div class="chip" data-model="3">Model 3</div>
+      <div class="chip" data-model="y">Model Y</div>
+      <div class="chip" data-model="s">Model S</div>
+      <div class="chip" data-model="x">Model X</div>
+      <div class="chip" data-model="ct">Cybertruck</div>
+    </div>
+    <table class="svc-table" id="svcTable">
+      <tbody>
+        <tr class="svc-row" data-models="3,y,s,x,ct"><td>Комплексна діагностика систем<div class="model-tags">Усі моделі</div></td><td>від 1 800 ₴</td></tr>
+        <tr class="svc-row" data-models="3,y,s,x,ct"><td>Оновлення та калібрування ПЗ<div class="model-tags">Усі моделі</div></td><td>900 ₴</td></tr>
+        <tr class="svc-row" data-models="3,y"><td>Заміна колодок і дисків<div class="model-tags">Model 3 / Model Y</div></td><td>від 4 200 ₴</td></tr>
+        <tr class="svc-row" data-models="s,x"><td>Ремонт пневмопідвіски<div class="model-tags">Model S / Model X</div></td><td>від 12 500 ₴</td></tr>
+        <tr class="svc-row" data-models="3,y,s,x"><td>Діагностика та сервіс батареї<div class="model-tags">Model 3 / Y / S / X</div></td><td>від 3 500 ₴</td></tr>
+        <tr class="svc-row" data-models="ct"><td>Обслуговування приводу Cybertruck<div class="model-tags">Cybertruck</div></td><td>від 9 800 ₴</td></tr>
+        <tr class="svc-row" data-models="3,y,s,x,ct"><td>Шиномонтаж та балансування<div class="model-tags">Усі моделі</div></td><td>від 1 200 ₴</td></tr>
+        <tr class="svc-row" data-models="3,y,s,x,ct"><td>Керамічне покриття кузова<div class="model-tags">Усі моделі</div></td><td>від 8 900 ₴</td></tr>
+        <tr class="svc-row" data-models="3,y,s,x,ct"><td>Хімчистка та детейлінг салону<div class="model-tags">Усі моделі</div></td><td>від 2 600 ₴</td></tr>
+        <tr class="svc-row" data-models="s,x,ct"><td>Тюнінг підвіски та налаштування ходової<div class="model-tags">Model S / X / Cybertruck</div></td><td>від 15 000 ₴</td></tr>
+      </tbody>
+    </table>
+
+    <div class="form-card" id="booking">
+      <h3 style="margin-bottom:20px;">Онлайн-запис на сервіс</h3>
+      <form onsubmit="event.preventDefault(); this.reset(); document.getElementById('bookOk').style.display='block';">
+        <div class="form-grid">
+          <div class="field"><label>Ім'я</label><input required placeholder="Ваше ім'я"></div>
+          <div class="field"><label>Телефон</label><input required placeholder="+380"></div>
+          <div class="field"><label>Модель Tesla</label>
+            <select><option>Model 3</option><option>Model Y</option><option>Model S</option><option>Model X</option><option>Cybertruck</option></select>
+          </div>
+          <div class="field"><label>Послуга</label>
+            <select><option>Діагностика</option><option>Ремонт підвіски</option><option>Сервіс батареї</option><option>Шиномонтаж</option><option>Детейлінг</option><option>Інше</option></select>
+          </div>
+          <div class="field full"><label>Коментар</label><textarea rows="3" placeholder="Опишіть проблему або побажання"></textarea></div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:18px;">Надіслати заявку</button>
+        <p class="form-note" id="bookOk" style="display:none; color:var(--accent);">Заявку надіслано. Ми зв'яжемось з вами найближчим часом.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="rental">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Оренда автомобілів Tesla</h2>
+      <p>Короткострокова та довгострокова оренда. Повна страховка та підтримка 24/7 включені.</p>
+    </div>
+    <div class="filter-row">
+      <div class="chip active">Усі моделі</div>
+      <div class="chip">До 3000 ₴/добу</div>
+      <div class="chip">Понад 3000 ₴/добу</div>
+    </div>
+    <div class="rental-grid">
+      <div class="car-card">
+        <div class="car-vis">Model 3</div>
+        <h4>Tesla Model 3</h4>
+        <div class="car-specs">Запас ходу 491 км · Автопілот · 4 місця багажу</div>
+        <div class="car-price">2 400 ₴<span>/добу</span></div>
+        <div class="car-specs">14 000 ₴/тиждень · 48 000 ₴/місяць</div>
+        <a href="#rentform" class="btn btn-ghost" style="margin-top:10px; text-align:center;">Забронювати</a>
+      </div>
+      <div class="car-card">
+        <div class="car-vis">Model Y</div>
+        <h4>Tesla Model Y</h4>
+        <div class="car-specs">Запас ходу 505 км · Повний привід · 7 місць</div>
+        <div class="car-price">2 900 ₴<span>/добу</span></div>
+        <div class="car-specs">17 500 ₴/тиждень · 58 000 ₴/місяць</div>
+        <a href="#rentform" class="btn btn-ghost" style="margin-top:10px; text-align:center;">Забронювати</a>
+      </div>
+      <div class="car-card">
+        <div class="car-vis">Model S</div>
+        <h4>Tesla Model S</h4>
+        <div class="car-specs">Запас ходу 652 км · Plaid-режим · Преміум салон</div>
+        <div class="car-price">4 800 ₴<span>/добу</span></div>
+        <div class="car-specs">29 000 ₴/тиждень · 95 000 ₴/місяць</div>
+        <a href="#rentform" class="btn btn-ghost" style="margin-top:10px; text-align:center;">Забронювати</a>
+      </div>
+      <div class="car-card">
+        <div class="car-vis">Model X</div>
+        <h4>Tesla Model X</h4>
+        <div class="car-specs">Запас ходу 560 км · Двері «крило сокола» · 6 місць</div>
+        <div class="car-price">5 200 ₴<span>/добу</span></div>
+        <div class="car-specs">31 500 ₴/тиждень · 102 000 ₴/місяць</div>
+        <a href="#rentform" class="btn btn-ghost" style="margin-top:10px; text-align:center;">Забронювати</a>
+      </div>
+    </div>
+
+    <div class="form-card" id="rentform">
+      <h3 style="margin-bottom:14px;">Заявка на бронювання</h3>
+      <p class="form-note" style="margin-bottom:18px;">Умови оренди: вік від 23 років, стаж водіння від 3 років, застава, повний пакет страхування включено.</p>
+      <form onsubmit="event.preventDefault(); this.reset(); document.getElementById('rentOk').style.display='block';">
+        <div class="form-grid">
+          <div class="field"><label>Ім'я</label><input required placeholder="Ваше ім'я"></div>
+          <div class="field"><label>Телефон</label><input required placeholder="+380"></div>
+          <div class="field"><label>Модель</label>
+            <select><option>Model 3</option><option>Model Y</option><option>Model S</option><option>Model X</option></select>
+          </div>
+          <div class="field"><label>Термін оренди</label>
+            <select><option>Кілька днів</option><option>Тиждень</option><option>Місяць і більше</option></select>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:18px;">Забронювати</button>
+        <p class="form-note" id="rentOk" style="display:none; color:var(--accent);">Заявку прийнято. Менеджер зв'яжеться для підтвердження.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="sec-head"><h2>Відгуки клієнтів</h2></div>
+    <div class="rev-grid">
+      <div class="rev-item"><p>«Привозив Model Y на діагностику підвіски — знайшли те, що інші сервіси пропустили. Полагодили за день.»</p><div class="rev-name">Олександр К.</div><div class="rev-model">Model Y</div></div>
+      <div class="rev-item"><p>«Орендував Model 3 на тиждень у відрядження. Машина була ідеально заряджена і чиста, оформлення зайняло 15 хвилин.»</p><div class="rev-name">Марина Д.</div><div class="rev-model">Оренда, Model 3</div></div>
+      <div class="rev-item"><p>«Робили керамічне покриття та сервіс батареї на Model S. Пояснили кожен етап, ціна відповідала прайсу.»</p><div class="rev-name">Ігор П.</div><div class="rev-model">Model S</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div>
+      <div class="eyebrow">Про нас</div>
+      <h2 style="font-size:2rem; margin-bottom:16px;">Сервіс, зосереджений лише на Tesla</h2>
+      <p style="color:var(--text-dim);">Ми почали з невеликої майстерні у 2021 році, коли електромобілів Tesla в країні було ще мало. Сьогодні це повноцінний сервісний центр з власним обладнанням для діагностики високовольтних систем і командою інженерів, що проходять регулярне навчання з оновленнями Tesla.</p>
+      <div class="cert-row">
+        <div class="cert">Сертифікація з ремонту HV-систем</div>
+        <div class="cert">Партнерство з постачальниками OEM-запчастин</div>
+        <div class="cert">Власний підйомник та стенд розвал-сходження</div>
+      </div>
+    </div>
+    <div class="car-vis" style="height:280px;">Фото команди та обладнання сервісу</div>
+  </div>
+</section>
+
+<section id="prices">
+  <div class="wrap">
+    <div class="sec-head"><h2>Прозорі ціни</h2><p>Орієнтовна вартість без прихованих платежів.</p></div>
+    <div class="price-tabs">
+      <div class="chip active" onclick="showPriceTab('svc',this)">Сервіс</div>
+      <div class="chip" onclick="showPriceTab('rent',this)">Оренда</div>
+    </div>
+    <div class="price-tab-content active" id="price-svc">
+      <table class="svc-table"><tbody>
+        <tr><td>Діагностика систем</td><td>1 800 ₴</td></tr>
+        <tr><td>Заміна колодок і дисків</td><td>від 4 200 ₴</td></tr>
+        <tr><td>Сервіс високовольтної батареї</td><td>від 3 500 ₴</td></tr>
+        <tr><td>Ремонт підвіски</td><td>від 12 500 ₴</td></tr>
+        <tr><td>Керамічне покриття</td><td>від 8 900 ₴</td></tr>
+        <tr><td>Шиномонтаж</td><td>від 1 200 ₴</td></tr>
+      </tbody></table>
+    </div>
+    <div class="price-tab-content" id="price-rent">
+      <table class="svc-table"><tbody>
+        <tr><td>Model 3 — доба / тиждень / місяць</td><td>2 400 / 14 000 / 48 000 ₴</td></tr>
+        <tr><td>Model Y — доба / тиждень / місяць</td><td>2 900 / 17 500 / 58 000 ₴</td></tr>
+        <tr><td>Model S — доба / тиждень / місяць</td><td>4 800 / 29 000 / 95 000 ₴</td></tr>
+        <tr><td>Model X — доба / тиждень / місяць</td><td>5 200 / 31 500 / 102 000 ₴</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</section>
+
+<section id="contacts" style="border-bottom:none;">
+  <div class="wrap contact-grid">
+    <div>
+      <div class="eyebrow">Контакти</div>
+      <h2 style="font-size:2rem; margin-bottom:24px;">Зв'яжіться з нами</h2>
+      <div class="contact-info">
+        <div><div class="lbl">Адреса</div>вул. Промислова, 12, Одеса</div>
+        <div><div class="lbl">Телефон</div>+380 67 123 45 67</div>
+        <div><div class="lbl">Режим роботи</div>Пн–Сб: 9:00–19:00, Нд: вихідний</div>
+      </div>
+      <div class="social-row">
+        <a href="#">WhatsApp</a>
+        <a href="#">Telegram</a>
+      </div>
+    </div>
+    <div class="form-card" style="margin-top:0;">
+      <h3 style="margin-bottom:16px;">Зворотний зв'язок</h3>
+      <form onsubmit="event.preventDefault(); this.reset(); document.getElementById('contOk').style.display='block';">
+        <div class="field" style="margin-bottom:12px;"><label>Ім'я</label><input required></div>
+        <div class="field" style="margin-bottom:12px;"><label>Телефон або email</label><input required></div>
+        <div class="field"><label>Повідомлення</label><textarea rows="3"></textarea></div>
+        <button class="btn btn-primary" style="margin-top:16px;">Надіслати</button>
+        <p class="form-note" id="contOk" style="display:none; color:var(--accent);">Дякуємо! Повідомлення надіслано.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 AMPCARE. Усі права захищено.</footer>
+
+<script>
+// hero cursor glow
+const heroSec=document.getElementById('heroSec'), glow=document.getElementById('heroGlow');
+if(heroSec && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  heroSec.addEventListener('mousemove', e=>{
+    const r=heroSec.getBoundingClientRect();
+    glow.style.setProperty('--gx',(e.clientX-r.left)+'px');
+    glow.style.setProperty('--gy',(e.clientY-r.top)+'px');
+  });
+}
+
+// count-up stat
+const statEl=document.getElementById('statNum');
+if(statEl){
+  const target=parseInt(statEl.dataset.target,10);
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ statEl.textContent=target+'+'; }
+  else{
+    let start=null; const dur=1600;
+    function step(ts){
+      if(!start) start=ts;
+      const p=Math.min((ts-start)/dur,1);
+      const eased=1-Math.pow(1-p,3);
+      statEl.textContent=Math.round(eased*target)+'+';
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+}
+const root=document.documentElement;
+document.getElementById('themeBtn').onclick=()=>{
+  root.dataset.theme = root.dataset.theme==='light' ? 'dark' : 'light';
+};
+// burger
+document.getElementById('burgerBtn').onclick=()=>{
+  document.getElementById('navlinks').classList.toggle('open');
+};
+document.querySelectorAll('.navlinks a').forEach(a=>a.onclick=()=>document.getElementById('navlinks').classList.remove('open'));
+
+// service filter
+document.getElementById('filterRow').addEventListener('click',e=>{
+  const chip=e.target.closest('.chip'); if(!chip) return;
+  document.querySelectorAll('#filterRow .chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  const m=chip.dataset.model;
+  document.querySelectorAll('#svcTable .svc-row').forEach(row=>{
+    const models=row.dataset.models.split(',');
+    row.classList.toggle('hide', m!=='all' && !models.includes(m));
+  });
+});
+
+function showPriceTab(id,el){
+  document.querySelectorAll('.price-tab-content').forEach(x=>x.classList.remove('active'));
+  document.getElementById('price-'+id).classList.add('active');
+  el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
